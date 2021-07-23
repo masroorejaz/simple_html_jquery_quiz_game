@@ -1,0 +1,164 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="jquery/jquery-3.5.1.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+
+<title> Quiz Time! </title>
+
+<div class="container">
+  <div class="row" id="question_div">
+    <div class="col">
+      Q: <span id="span_question">What is this?</span>	  
+    </div>
+    
+  </div>
+  <div class="row mt-1" id="answer_div_1">
+    <div class="col">
+      <input type="radio" name="answer" value="1" checked="checked"/><span class="ml-1" id="span_answer_1" >Answer 1</span>
+    </div>
+    <div class="col">
+      <input type="radio" name="answer" value="2"/><span class="ml-1" id="span_answer_2" >Answer 2</span>
+    </div>    
+  </div>
+  
+  <div class="row" id="answer_div_2">
+    <div class="col">
+      <input type="radio" name="answer" value="3"/><span class="ml-1" id="span_answer_3">Answer 3</span>
+    </div>
+    <div class="col">
+      <input type="radio" name="answer" value="4"/><span class="ml-1" id="span_answer_4">Answer 4</span>
+    </div>    
+  </div>
+  
+  <div class="row mt-1" id="div_buttons">
+    <div class="col">
+      <button class="btn-primary" onclick="submit_anwer()">Submit</button>
+    </div>
+    <div class="col">
+      <button class="btn-danger" onclick="skip_question()">Skip</button>
+    </div>    
+  </div>
+  
+  <div id="div_finish" style="display:none">Quiz Finished!
+	<button class="btn-primary" onclick="restart_quiz()">Restart</button>
+  </div>
+  
+   <div class="row mt-1">
+    <div class="col">
+      True: <span class="ml-1" id="span_true">0</span>
+    </div>
+    <div class="col">
+     False: <span class="ml-1" id="span_false">0</span>
+    </div> 
+	<div class="col">
+     Skipped: <span class="ml-1" id="span_skipped">0</span>
+    </div>   	
+  </div>
+  
+  
+  
+</div>
+
+<script>
+
+
+
+let questions = [
+  ['Is There GTA 6?','Yes','No','Relese Date is Announced','Dont Know','2'],
+  ['How Many Parts of RDR are There?','1','4','3','2','3'],
+  ['Is RTX 3070 better than RTX 2080ti?','Yes','Same','No','Little Bit','1'],
+  ['Was GTA Made by a Mistake?','Yes','IDK','No','IDK','1'],
+  ['Who Made Minecraft?','Mojang','Rockstar Games','Markus Persson','Steve','3'],
+  ['Is Pubg Mobile a Chinese Game?','No','10%','Yes','50%','2'],
+  ['Which is the Best Budget Graphic Card?','Gtx 1050ti','Rtx 2060 Super','Rx 570','Gtx 1060','3'],
+  ['Which was the Most Powerful Gaming Console of Previous Generation?','Xbox One S','Ps4 Pro','Xbox One X','Ps4 Slim','3'],
+  ['Which is the Best Processer?','Ryzen','Both Are Same','Intel','IDK','1'],
+  ['Which is the Best Gaming Phone?','Iphone 12 Pro Max','Rog Phone 5 Ultimate','Galaxy S21 Ultra','Oneplus 9 pro','2'],
+  ['How Much Money did GTA V Made on Its First Day?','$50 Million','$1 Billion','$20 Million','$10 Billion','2'],
+  ['Which is the Most Famous Gaming Casing?','Antec DF500','Redragon GC-601','NZXT h710i','NZXT h510 Elite','1'],
+  ['When was Among Us Made?','2020','2018','2015','2017','2'],  
+  ['Which Game Eliminated Fall Guys: Ultimate Knockout Popularity?','Among Us','GTA V','Minecraft','Pubg','1'],
+  ['How can you Increase Ps5 Storage?','External Hard drive','Hard Drive','M.2 Nvme','SSD','3'],
+  ['Which Steering Wheel Can Support All 3, Playstation, Xbox And PC?','Logitech g923','Logitech g29','Logitech g920','All','1'],
+  ['Which is the Best Budget Headphone?','Kotion each','Logitech','Razor','Steel Series','1'],
+  ['How can you cool modren CPUs?','Cooler','AIO','Fan','Phook','2'],
+  ['What are game generated players called?','Noob','Gamer','Player','Bot','4'],
+  ];
+	
+function load_questions(num){
+	let question=questions[num][0];
+	let answer_1=questions[num][1];
+	let answer_2=questions[num][2];
+	let answer_3=questions[num][3];
+	let answer_4=questions[num][4];
+	$('#span_question').html(question);
+	$('#span_answer_1').html(answer_1);
+	$('#span_answer_2').html(answer_2);
+	$('#span_answer_3').html(answer_3);
+	$('#span_answer_4').html(answer_4);
+};
+
+let number=0;
+load_questions(number);
+
+function load_next_question(){
+	number=parseInt(number)+1;
+	
+	var num_one = parseInt(questions.length);
+    var num_two = parseInt(number);
+	
+	if(num_one===num_two){
+		$('#question_div').css({display: "none"});
+		$('#answer_div_1').css({display: "none"});
+		$('#answer_div_2').css({display: "none"});
+		$('#div_buttons').css({display: "none"});
+		$('#div_finish').css({display: "block"});
+	}
+	
+	else {
+		load_questions(number);
+	}
+};
+
+function skip_question() {
+	let span_skipped=$('#span_skipped').html();
+	span_skipped=parseInt(span_skipped)+1;
+	$('#span_skipped').html(span_skipped);
+
+	load_next_question();
+};
+
+function submit_anwer(){
+	let true_anwer=questions[number][5];
+	let user_anwer=$("input[name='answer']:checked").val();
+	
+	if(parseInt(true_anwer)===parseInt(user_anwer)){
+		let span_true=$('#span_true').html();
+		span_true=parseInt(span_true)+1;
+		$('#span_true').html(span_true); 
+		var audio = new Audio('sounds/correct.mp3');
+		audio.play();
+	}
+	
+	else {
+		let span_false=$('#span_false').html();
+		span_false=parseInt(span_false)+1;
+		$('#span_false').html(span_false); 
+		var audio = new Audio('sounds/wrong.mp3');
+		audio.play();
+	}
+	
+	load_next_question();
+}
+
+function restart_quiz(){
+location.reload();
+
+}
+
+</script>
