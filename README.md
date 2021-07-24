@@ -1,7 +1,7 @@
 # simple_html_jquery_quiz_game
 A very simple quiz game using Html and JQuery
 
-To add or remove questions goto line 72 and add an array for the question there
+To add or remove questions goto line 72 in html.index and add an array for the question there
 
 It follows the following logic
 ['Is There GTA 6?','Yes','No','Relese Date is Announced','Dont Know','2'],
